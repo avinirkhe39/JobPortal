@@ -3,11 +3,50 @@
 <head>
     <title>Job Portal</title>
 </head>
+
 <body>
 
     <h1>Welcome to Job Portal</h1>
 
-    <p>Login successful!</p>
+    {% if user.is_authenticated %}
+
+        <h2>Hello, {{ user.username }} 👋</h2>
+
+        <p>Email: {{ user.email }}</p>
+        <p>Role: {{ user.get_role_display }}</p>
+
+        <hr>
+
+        {% if user.role == "job_seeker" %}
+
+            <h2>Job Seeker Dashboard</h2>
+
+            <a href="#">Find Jobs</a>
+            <br><br>
+
+            <a href="#">My Applications</a>
+
+        {% elif user.role == "recruiter" %}
+
+            <h2>Recruiter Dashboard</h2>
+
+            <a href="#">Post a Job</a>
+            <br><br>
+
+            <a href="#">My Jobs</a>
+
+        {% endif %}
+
+        <hr>
+
+        <a href="/admin/">Admin Panel</a>
+
+    {% else %}
+
+        <p>Please login first.</p>
+        <a href="/login/">Login</a>
+
+    {% endif %}
 
 </body>
 </html>
