@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm
 
 def register(request):
@@ -25,9 +26,21 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+
+            if user.role == 'job_seeker':
+                return redirect('job_seeker_dashboard')
+
+            elif user.role == 'recruiter':
+                return redirect('home')
+
+        return redirect('home')
+        
 
     return render(request, 'accounts/login.html')
 
 def home(request):
     return render(request, 'accounts/home.html')
+
+@login_required
+def job_seeker_dashboard(request):
+    return render(request, 'accounts/job_seeker_dashboard.html')
