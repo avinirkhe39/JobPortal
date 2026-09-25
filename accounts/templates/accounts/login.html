@@ -1,35 +1,124 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Job Portal - Login</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerConnect - Login</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+    
+
 </head>
 
 <body>
 
-    <h1>Login</h1>
+<nav class="navbar">
 
-    <form method="POST">
+    <div class="logo">
+        CareerConnect
+    </div>
 
-        {% csrf_token %}
+    <div class="nav-links">
 
-        <label>Username:</label>
-        <input type="text" name="username" required>
+        <a href="{% url 'home' %}">Home</a>
 
-        <br><br>
+        <a href="{% url 'register' %}">Register</a>
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
+        <button id="theme-toggle" class="theme-toggle" type="button">
+            🌙 Dark
+        </button>
 
-        <br><br>
+    </div>
 
-        <button type="submit">Login</button>
+</nav>
 
-    </form>
 
-    <p>
-        Don't have an account?
-        <a href="/register/">Register</a>
-    </p>
+<main class="container">
+
+    <section class="search-box">
+
+        <h1>Welcome Back</h1>
+
+        <p>Login to your CareerConnect account.</p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="error">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn search-btn">
+                    Login
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <p>
+            Don't have an account?
+            <a href="{% url 'register' %}">
+                Create Account
+            </a>
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="{% static 'accounts/theme.js' %}"></script>
 
 </body>
+
 </html>

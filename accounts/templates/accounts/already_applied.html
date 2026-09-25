@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Already Applied</title>
+</head>
+
+<body>
+
+    <h1>Already Applied</h1>
+
+    <h2>{{ user.username }}, you have already applied for this job.</h2>
+
+    <hr>
+
+    <h3>{{ job.title }}</h3>
+
+    <p>
+        <strong>Company:</strong>
+        {{ job.company }}
+    </p>
+
+    <p>
+        <strong>Location:</strong>
+        {{ job.location }}
+    </p>
+
+    <p>
+        You cannot apply for the same job twice.
+    </p>
+
+    <hr>
+
+    <a href="{% url 'job_seeker_dashboard' %}">
+        <button type="button">Back to Jobs</button>
+    </a>
+
+    <a href="{% url 'my_applications' %}">
+        <button type="button">My Applications</button>
+    </a>
+<script src="{% static 'accounts/theme.js' %}"></script>
+</body>
+</html>

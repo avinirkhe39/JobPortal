@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {% load static %}
+
+    <title>Post New Job - Job Portal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Job Portal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'recruiter_dashboard' %}">
+                My Jobs
+            </a>
+
+            <a href="{% url 'post_job' %}">
+                Post New Job
+            </a>
+
+            <button type="button"
+        id="theme-toggle"
+        class="theme-toggle">
+    🌙 Dark
+</button>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <div class="search-box">
+
+            <h1>Post a New Job 🚀</h1>
+
+            <p>
+                Find the right candidate for your company.
+            </p>
+
+            <hr>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- Job Title -->
+                <div class="form-group">
+
+                    <label for="{{ form.title.id_for_label }}">
+                        Job Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+                        <div class="error">
+                            {{ form.title.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Company -->
+                <div class="form-group">
+
+                    <label for="{{ form.company.id_for_label }}">
+                        Company
+                    </label>
+
+                    {{ form.company }}
+
+                    {% if form.company.errors %}
+                        <div class="error">
+                            {{ form.company.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Location -->
+                <div class="form-group">
+
+                    <label for="{{ form.location.id_for_label }}">
+                        Location
+                    </label>
+
+                    {{ form.location }}
+
+                    {% if form.location.errors %}
+                        <div class="error">
+                            {{ form.location.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Work Mode -->
+                <div class="form-group">
+
+                    <label for="{{ form.mode.id_for_label }}">
+                        Work Mode
+                    </label>
+
+                    {{ form.mode }}
+
+                    {% if form.mode.errors %}
+                        <div class="error">
+                            {{ form.mode.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Shift -->
+                <div class="form-group">
+
+                    <label for="{{ form.shift.id_for_label }}">
+                        Shift
+                    </label>
+
+                    {{ form.shift }}
+
+                    {% if form.shift.errors %}
+                        <div class="error">
+                            {{ form.shift.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Salary -->
+                <div class="form-group">
+
+                    <label for="{{ form.salary.id_for_label }}">
+                        Salary
+                    </label>
+
+                    {{ form.salary }}
+
+                    {% if form.salary.errors %}
+                        <div class="error">
+                            {{ form.salary.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="form-group">
+
+                    <label for="{{ form.description.id_for_label }}">
+                        Job Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+                        <div class="error">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn apply-btn">
+                        Post Job 🚀
+                    </button>
+
+                    <a
+                        href="{% url 'recruiter_dashboard' %}"
+                        class="btn clear-btn">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+<script src="{% static 'accounts/theme.js' %}"></script>
+</body>
+</html>

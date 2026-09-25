@@ -4,7 +4,7 @@
 
     {% load static %}
 
-    <title>Job Seeker Dashboard</title>
+    <title>Recruiter Dashboard</title>
 
     <link rel="stylesheet"
           href="{% static 'accounts/style.css' %}">
@@ -22,12 +22,12 @@
 
         <div class="nav-links">
 
-            <a href="{% url 'job_seeker_dashboard' %}">
-                Jobs
+            <a href="{% url 'recruiter_dashboard' %}">
+                My Jobs
             </a>
 
-            <a href="{% url 'my_applications' %}">
-                My Applications
+            <a href="{% url 'post_job' %}">
+                Post New Job
             </a>
 
             <a href="{% url 'my_profile' %}">
@@ -60,54 +60,31 @@
             </h1>
 
             <p>
-                Find your next opportunity and build your career.
+                Manage your jobs and find the right candidates.
             </p>
 
         </div>
 
 
-        <!-- Search -->
+        <!-- Recruiter Actions -->
         <div class="search-box">
 
-            <h2>Find Your Dream Job 🔎</h2>
+            <h2>Recruiter Dashboard</h2>
 
-            <form method="GET"
-                  action="{% url 'job_seeker_dashboard' %}"
-                  class="search-form">
+            <p>
+                Create new job opportunities and manage applications.
+            </p>
 
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="Job title, company or skill"
-                    value="{{ search_query }}"
-                >
-
-                <input
-                    type="text"
-                    name="location"
-                    placeholder="Location"
-                    value="{{ location }}"
-                >
-
-                <button
-                    type="submit"
-                    class="btn search-btn">
-                    Search
-                </button>
-
-                <a
-                    href="{% url 'job_seeker_dashboard' %}"
-                    class="btn clear-btn">
-                    Clear
-                </a>
-
-            </form>
+            <a href="{% url 'post_job' %}"
+               class="btn search-btn">
+                + Post New Job
+            </a>
 
         </div>
 
 
-        <!-- Available Jobs -->
-        <h2>Available Jobs</h2>
+        <!-- My Jobs -->
+        <h2>My Posted Jobs</h2>
 
         {% if jobs %}
 
@@ -151,34 +128,16 @@
                         </p>
 
 
-                        <!-- Buttons -->
+                        <!-- Application Button -->
                         <div class="actions">
 
                             <a
-                                href="{% url 'job_details' job.id %}"
+                                href="{% url 'view_applications' job.id %}"
                                 class="btn details-btn">
-                                View Details
+
+                                View Applications
+
                             </a>
-
-
-                            {% if job.id in applied_job_ids %}
-
-                                <button
-                                    type="button"
-                                    class="btn already-btn"
-                                    disabled>
-                                    Already Applied ✓
-                                </button>
-
-                            {% else %}
-
-                                <a
-                                    href="{% url 'apply_job' job.id %}"
-                                    class="btn apply-btn">
-                                    Apply Now
-                                </a>
-
-                            {% endif %}
 
                         </div>
 
@@ -192,11 +151,19 @@
 
             <div class="job-card">
 
-                <h3>No Jobs Found 😔</h3>
+                <h3>No Jobs Posted Yet</h3>
 
                 <p>
-                    Try another job title or location.
+                    Start by posting your first job.
                 </p>
+
+                <a
+                    href="{% url 'post_job' %}"
+                    class="btn apply-btn">
+
+                    + Post New Job
+
+                </a>
 
             </div>
 

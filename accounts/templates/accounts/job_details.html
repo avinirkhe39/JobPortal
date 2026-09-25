@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {% load static %}
+
+    <title>{{ job.title }} - Job Details</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Job Portal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'job_seeker_dashboard' %}">
+                Jobs
+            </a>
+
+            <a href="{% url 'my_applications' %}">
+                My Applications
+            </a>
+
+            <a href="{% url 'my_profile' %}">
+                My Profile
+            </a>
+
+            <button type="button"
+        id="theme-toggle"
+        class="theme-toggle">
+    🌙 Dark
+</button>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <div class="job-details-card">
+
+            <!-- Job Header -->
+            <div class="job-header">
+
+                <div>
+
+                    <h1>{{ job.title }}</h1>
+
+                    <p class="company">
+                        {{ job.company }}
+                    </p>
+
+                </div>
+
+                <div class="job-date">
+
+                    Posted on:
+                    {{ job.created_at|date:"d M Y" }}
+
+                </div>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Job Information -->
+            <div class="job-info">
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        📍 Location
+                    </span>
+
+                    <span>
+                        {{ job.location }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        💰 Salary
+                    </span>
+
+                    <span>
+                        {{ job.salary|default:"Not specified" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        🏢 Work Mode
+                    </span>
+
+                    <span>
+                        {{ job.get_mode_display }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        🕐 Shift
+                    </span>
+
+                    <span>
+                        {{ job.get_shift_display }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Job Description -->
+            <div class="job-description">
+
+                <h2>
+                    Job Description
+                </h2>
+
+                <p>
+                    {{ job.description|linebreaks }}
+                </p>
+
+            </div>
+
+
+            <!-- Action Buttons -->
+            <div class="job-actions">
+
+                <a
+                    href="{% url 'apply_job' job.id %}"
+                    class="btn apply-btn">
+                    Apply Now 🚀
+                </a>
+
+                <a
+                    href="{% url 'job_seeker_dashboard' %}"
+                    class="btn clear-btn">
+                    ← Back to Jobs
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+<script src="{% static 'accounts/theme.js' %}"></script>
+</body>
+</html>

@@ -1,27 +1,117 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Job Portal - Register</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerConnect - Register</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+
 </head>
 
 <body>
 
-    <h1>Create Your Account</h1>
+<nav class="navbar">
 
-    <form method="POST">
+    <div class="logo">
+        CareerConnect
+    </div>
 
-        {% csrf_token %}
+    <div class="nav-links">
 
-        {{ form.as_p }}
+        <a href="{% url 'home' %}">Home</a>
 
-        <button type="submit">Register</button>
+        <a href="{% url 'login' %}">Login</a>
 
-    </form>
+        <button id="theme-toggle" class="theme-toggle" type="button">
+            🌙 Dark
+        </button>
 
-    <p>
-        Already have an account?
-        <a href="/login/">Login</a>
-    </p>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <section class="search-box">
+
+        <h1>Create Your Account</h1>
+
+        <p>Register to start using CareerConnect.</p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="form-group">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+
+                        <div class="error">
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn search-btn">
+                    Register
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <p>
+            Already have an account?
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="{% static 'accounts/theme.js' %}"></script>
 
 </body>
+
 </html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    {% load static %}
+
+    <title>My Applications</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/style.css' %}">
+
+    <style>
+
+        .application-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+            margin-bottom: 20px;
+        }
+
+        .application-card h2 {
+            margin-top: 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-shortlisted {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-selected {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Job Portal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'job_seeker_dashboard' %}">
+                Jobs
+            </a>
+
+            <a href="{% url 'my_applications' %}">
+                My Applications
+            </a>
+
+            <a href="{% url 'my_profile' %}">
+                My Profile
+            </a>
+
+            <button type="button"
+        id="theme-toggle"
+        class="theme-toggle">
+    🌙 Dark
+</button>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <div class="welcome">
+
+            <h1>
+                My Applications 📄
+            </h1>
+
+            <p>
+                Track all the jobs you have applied for.
+            </p>
+
+        </div>
+
+
+        {% if applications %}
+
+            {% for application in applications %}
+
+                <div class="application-card">
+
+                    <h2>
+                        {{ application.job.title }}
+                    </h2>
+
+                    <p class="company">
+                        🏢 {{ application.job.company }}
+                    </p>
+
+                    <p class="location">
+                        📍 {{ application.job.location }}
+                    </p>
+
+                    <p class="salary">
+                        💰 {{ application.job.salary }}
+                    </p>
+
+<p class="job-mode">
+    🏢 {{ application.job.get_mode_display }}
+</p>
+
+<p class="job-shift">
+    🕐 {{ application.job.get_shift_display }}
+</p>
+
+                    <p>
+                        <strong>Applied On:</strong>
+                        {{ application.applied_at|date:"d M Y, h:i A" }}
+                    </p>
+
+
+                    <!-- Application Status -->
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        {% if application.status == "pending" %}
+
+                            <span class="status status-pending">
+                                🟡 Pending
+                            </span>
+
+                        {% elif application.status == "shortlisted" %}
+
+                            <span class="status status-shortlisted">
+                                🔵 Shortlisted
+                            </span>
+
+                        {% elif application.status == "selected" %}
+
+                            <span class="status status-selected">
+                                🟢 Selected
+                            </span>
+
+                        {% elif application.status == "rejected" %}
+
+                            <span class="status status-rejected">
+                                🔴 Rejected
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <!-- View Job -->
+
+                    <div class="actions">
+
+                        <a
+                            href="{% url 'job_details' application.job.id %}"
+                            class="btn details-btn">
+
+                            View Job
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="job-card">
+
+                <h2>
+                    No Applications Yet 😔
+                </h2>
+
+                <p>
+                    You haven't applied for any jobs yet.
+                </p>
+
+                <a
+                    href="{% url 'job_seeker_dashboard' %}"
+                    class="btn search-btn">
+
+                    Browse Jobs
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+<script src="{% static 'accounts/theme.js' %}"></script>
+</body>
+
+</html>

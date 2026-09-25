@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    {% load static %}
+
+    <title>Job Applications</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/style.css' %}">
+
+    <style>
+
+        .job-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+            margin-bottom: 30px;
+        }
+
+        .job-header h1 {
+            margin-top: 0;
+        }
+
+        .application-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+            margin-bottom: 20px;
+        }
+
+        .application-card h3 {
+            margin-top: 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-shortlisted {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-selected {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-form {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+        }
+
+        .status-form select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .update-btn {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .candidate-info {
+            line-height: 1.7;
+        }
+
+        @media (max-width: 600px) {
+
+            .status-form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .status-form select {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .status-form .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job Portal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'recruiter_dashboard' %}">
+                My Jobs
+            </a>
+
+            <a href="{% url 'post_job' %}">
+                Post New Job
+            </a>
+
+            <a href="{% url 'my_profile' %}">
+                My Profile
+            </a>
+
+            <button type="button"
+        id="theme-toggle"
+        class="theme-toggle">
+    🌙 Dark
+</button>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+
+    <div class="container">
+
+
+        <!-- Job Information -->
+
+        <div class="job-header">
+
+            <h1>
+                Job Applications 📋
+            </h1>
+
+            <h2>
+                {{ job.title }}
+            </h2>
+
+            <p class="company">
+                🏢 {{ job.company }}
+            </p>
+
+            <p class="location">
+                📍 {{ job.location }}
+            </p>
+
+            <p class="job-mode">
+                🏢 {{ job.get_mode_display }}
+            </p>
+
+            <p class="job-shift">
+                🕐 {{ job.get_shift_display }}
+            </p>
+
+        </div>
+
+
+        <!-- Applications -->
+
+        <h2>
+            Applications Received
+        </h2>
+
+
+        {% if applications %}
+
+            {% for application in applications %}
+
+                <div class="application-card">
+
+                    <h3>
+                        👤 {{ application.applicant.username }}
+                    </h3>
+
+
+                    <div class="candidate-info">
+
+                        <p>
+                            <strong>Email:</strong>
+                            {{ application.applicant.email }}
+                        </p>
+
+                        <p>
+                            <strong>Applied On:</strong>
+                            {{ application.applied_at|date:"d M Y, h:i A" }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Current Status -->
+
+                    <p>
+
+                        <strong>Current Status:</strong>
+
+                        {% if application.status == "pending" %}
+
+                            <span class="status status-pending">
+                                🟡 Pending
+                            </span>
+
+                        {% elif application.status == "shortlisted" %}
+
+                            <span class="status status-shortlisted">
+                                🔵 Shortlisted
+                            </span>
+
+                        {% elif application.status == "selected" %}
+
+                            <span class="status status-selected">
+                                🟢 Selected
+                            </span>
+
+                        {% elif application.status == "rejected" %}
+
+                            <span class="status status-rejected">
+                                🔴 Rejected
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <!-- Update Status -->
+
+                    <form
+                        method="POST"
+                        action="{% url 'update_application_status' application.id %}"
+                        class="status-form">
+
+                        {% csrf_token %}
+
+                        <label for="status_{{ application.id }}">
+
+                            <strong>
+                                Change Status:
+                            </strong>
+
+                        </label>
+
+
+                        <select
+                            name="status"
+                            id="status_{{ application.id }}">
+
+                            <option
+                                value="pending"
+                                {% if application.status == 'pending' %}
+                                    selected
+                                {% endif %}>
+                                Pending
+                            </option>
+
+
+                            <option
+                                value="shortlisted"
+                                {% if application.status == 'shortlisted' %}
+                                    selected
+                                {% endif %}>
+                                Shortlisted
+                            </option>
+
+
+                            <option
+                                value="rejected"
+                                {% if application.status == 'rejected' %}
+                                    selected
+                                {% endif %}>
+                                Rejected
+                            </option>
+
+
+                            <option
+                                value="selected"
+                                {% if application.status == 'selected' %}
+                                    selected
+                                {% endif %}>
+                                Selected
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            type="submit"
+                            class="btn update-btn">
+
+                            Update Status
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="job-card">
+
+                <h2>
+                    No Applications Yet 📭
+                </h2>
+
+                <p>
+                    No applications have been received
+                    for this job yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- Back Button -->
+
+        <br>
+
+        <a
+            href="{% url 'recruiter_dashboard' %}"
+            class="btn back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+<script src="{% static 'accounts/theme.js' %}"></script>
+</body>
+
+</html>

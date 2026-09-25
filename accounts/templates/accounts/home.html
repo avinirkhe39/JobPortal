@@ -1,52 +1,180 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Job Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerConnect</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
 
 <body>
 
-    <h1>Welcome to Job Portal</h1>
+<nav class="navbar">
 
-    {% if user.is_authenticated %}
+    <div class="logo">
+        CareerConnect
+    </div>
 
-        <h2>Hello, {{ user.username }} 👋</h2>
+    <div class="nav-links">
 
-        <p>Email: {{ user.email }}</p>
-        <p>Role: {{ user.get_role_display }}</p>
+        {% if user.is_authenticated %}
 
-        <hr>
+            <a href="{% url 'home' %}">Home</a>
 
-        {% if user.role == "job_seeker" %}
+            <a href="{% url 'my_profile' %}">
+                My Profile
+            </a>
 
-            <h2>Job Seeker Dashboard</h2>
+            {% if user.role == "job_seeker" %}
 
-            <a href="#">Find Jobs</a>
-            <br><br>
+                <a href="{% url 'job_seeker_dashboard' %}">
+                    Find Jobs
+                </a>
 
-            <a href="#">My Applications</a>
+                <a href="{% url 'my_applications' %}">
+                    My Applications
+                </a>
 
-        {% elif user.role == "recruiter" %}
+            {% elif user.role == "recruiter" %}
 
-            <h2>Recruiter Dashboard</h2>
+                <a href="{% url 'recruiter_dashboard' %}">
+                    My Jobs
+                </a>
 
-            <a href="#">Post a Job</a>
-            <br><br>
+                <a href="{% url 'post_job' %}">
+                    Post a Job
+                </a>
 
-            <a href="#">My Jobs</a>
+            {% endif %}
+
+            <button id="theme-toggle" class="theme-toggle" type="button">
+                🌙 Dark
+            </button>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+
+            <button id="theme-toggle" class="theme-toggle" type="button">
+                🌙 Dark
+            </button>
 
         {% endif %}
 
-        <hr>
+    </div>
 
-        <a href="/admin/">Admin Panel</a>
+</nav>
 
-    {% else %}
 
-        <p>Please login first.</p>
-        <a href="/login/">Login</a>
+<main class="container">
+
+    <section class="welcome">
+
+        {% if user.is_authenticated %}
+
+            <h1>
+                Welcome back, {{ user.username }} 👋
+            </h1>
+
+            <p>
+                Welcome to CareerConnect — your job search platform.
+            </p>
+
+        {% else %}
+
+            <h1>
+                Find Your Next Career Opportunity
+            </h1>
+
+            <p>
+                Connect with employers and discover the right job opportunity.
+            </p>
+
+            <div class="actions">
+
+                <a href="{% url 'login' %}"
+                   class="btn search-btn">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                   class="btn details-btn">
+                    Create Account
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    {% if user.is_authenticated %}
+
+        <div class="search-box">
+
+            {% if user.role == "job_seeker" %}
+
+                <h2>Job Seeker Dashboard</h2>
+
+                <p>
+                    Search for jobs and apply to opportunities
+                    that match your skills.
+                </p>
+
+                <a href="{% url 'job_seeker_dashboard' %}"
+                   class="btn search-btn">
+                    Find Jobs
+                </a>
+
+                <a href="{% url 'my_applications' %}"
+                   class="btn details-btn">
+                    My Applications
+                </a>
+
+
+            {% elif user.role == "recruiter" %}
+
+                <h2>Recruiter Dashboard</h2>
+
+                <p>
+                    Post jobs and manage applications from candidates.
+                </p>
+
+                <a href="{% url 'post_job' %}"
+                   class="btn search-btn">
+                    Post a Job
+                </a>
+
+                <a href="{% url 'recruiter_dashboard' %}"
+                   class="btn details-btn">
+                    My Jobs
+                </a>
+
+            {% endif %}
+
+        </div>
 
     {% endif %}
+
+</main>
+
+
+<script src="{% static 'accounts/theme.js' %}"></script>
 
 </body>
 </html>
