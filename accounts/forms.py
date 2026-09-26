@@ -25,6 +25,7 @@ class JobForm(forms.ModelForm):
             'title',
             'company',
             'location',
+            'experience',
             'mode',
             'shift',
             'description',

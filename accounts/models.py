@@ -62,6 +62,13 @@ class Job(models.Model):
     # Example: Pune, Mumbai
     location = models.CharField(max_length=100)
 
+    # Required experience for the job
+    # Example: Fresher, 1-2 Years, 3-5 Years
+    experience = models.CharField(
+    max_length=50,
+    default='Fresher'
+    )
+
     # Work Mode
     MODE_CHOICES = (
         ('onsite', 'On-site'),

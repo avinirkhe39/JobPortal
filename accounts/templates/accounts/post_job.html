@@ -115,6 +115,23 @@
 
                 </div>
 
+                <!-- Experience -->
+<div class="form-group">
+
+    <label for="{{ form.experience.id_for_label }}">
+        Experience
+    </label>
+
+    {{ form.experience }}
+
+    {% if form.experience.errors %}
+        <div class="error">
+            {{ form.experience.errors }}
+        </div>
+    {% endif %}
+
+</div>
+
 
                 <!-- Work Mode -->
                 <div class="form-group">
