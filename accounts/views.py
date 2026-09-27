@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib import messages
 
 from .forms import RegistrationForm, JobForm, ProfileForm
-from .models import Job, Application
+from .models import User, Job, Application
 
 def register(request):
     if request.method == 'POST':
